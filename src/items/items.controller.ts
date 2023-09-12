@@ -25,9 +25,9 @@ export class ItemsController {
     return this.itemsService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.itemsService.findOne(+id);
+  @Get(':query')
+  findOne(@Param('query') query: string) {
+    return this.itemsService.findOne(query);
   }
 
   @Patch(':id')
