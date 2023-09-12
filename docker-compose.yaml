@@ -1,0 +1,11 @@
+version: '3'
+services:
+  db:
+    image: mongo:5
+    restart: always # restarts container if it fails
+    ports:
+      - 27017:27017 # exposes local port 27017 to container port 27017
+    environment:
+      MONGODB_DATABASE: 'bazar'
+    volumes: # creates a volume to persist data
+      - ./mongo:/data/db

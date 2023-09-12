@@ -6,6 +6,9 @@
 .env
 .env.local
 
+# Mongo data
+/mongo
+
 # Logs
 logs
 *.log
