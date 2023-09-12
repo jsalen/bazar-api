@@ -56,8 +56,28 @@ export class ItemsService {
     return item;
   }
 
-  update(id: number, updateItemDto: UpdateItemDto) {
-    return `This action updates a #${id} item`;
+  async update(id: string, updateItemDto: UpdateItemDto) {
+    const objectID = new mongoose.Types.ObjectId(id);
+
+    if (updateItemDto.title) {
+      updateItemDto.title = updateItemDto.title.toLowerCase();
+    }
+
+    try {
+      const item = await this.ItemModel.findByIdAndUpdate(
+        objectID,
+        updateItemDto,
+        { new: true },
+      );
+
+      if (!item) {
+        throw new NotFoundException(`Item not found: ${objectID}`);
+      }
+
+      return item;
+    } catch (error) {
+      this.handleException(error);
+    }
   }
 
   remove(id: number) {
