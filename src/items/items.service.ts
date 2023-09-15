@@ -80,8 +80,16 @@ export class ItemsService {
     }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} item`;
+  async remove(id: string) {
+    const { deletedCount } = await this.ItemModel.deleteOne({
+      _id: new mongoose.Types.ObjectId(id),
+    });
+
+    if (deletedCount === 0) {
+      throw new NotFoundException(`Item not found: ${id}`);
+    }
+
+    return;
   }
 
   handleException(error: any) {
