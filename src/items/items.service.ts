@@ -5,7 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import mongoose, { Model, isValidObjectId } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import { CreateItemDto } from './dto/create-item.dto';
 import { UpdateItemDto } from './dto/update-item.dto';
 import { Item } from './entities/item.entity';
@@ -36,22 +36,10 @@ export class ItemsService {
     return `This action returns all items`;
   }
 
-  async findOne(query: string) {
-    let item: Item;
+  async findOne(id: string) {
+    const objectID = new mongoose.Types.ObjectId(id);
 
-    if (isValidObjectId(query)) {
-      const objectID = new mongoose.Types.ObjectId(query);
-
-      item = await this.ItemModel.findById(objectID);
-    }
-
-    if (!item) {
-      item = await this.ItemModel.findOne({ title: query.toLowerCase() });
-    }
-
-    if (!item) {
-      throw new NotFoundException(`Item not found: ${query}`);
-    }
+    const item = await this.ItemModel.findById(objectID);
 
     return item;
   }

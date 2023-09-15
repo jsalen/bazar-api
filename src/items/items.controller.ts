@@ -26,9 +26,9 @@ export class ItemsController {
     return this.itemsService.findAll();
   }
 
-  @Get(':query')
-  findOne(@Param('query') query: string) {
-    return this.itemsService.findOne(query);
+  @Get(':id')
+  findOne(@Param('id', ParseMongoIdPipe) id: string) {
+    return this.itemsService.findOne(id);
   }
 
   @Patch(':id')
