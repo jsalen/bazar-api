@@ -8,6 +8,7 @@ This is a simple API for a Bazar, where you can create, update, delete and list 
 ## Stack used
 - NestJS
 - MongoDB
+- Mongoose ODM
 - Docker
 
 ## Installation
@@ -20,11 +21,15 @@ npm install
 ```
 npm install -g @nestjs/cli
 ```
-4. Set up Mongo Data Base
+4. Copy `.env.template` to `.env` and fill the variables
+```bash
+cp .env.template .env
+```
+5. Set up Mongo Data Base
 ```
 docker-compose up -d
 ```
-5. Seed the database
+6. Seed the database
 ```
 GET http://localhost:3000/api/seed
 ```
