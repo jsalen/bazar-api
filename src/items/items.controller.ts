@@ -8,7 +8,7 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { ApiParam, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiParam, ApiTags } from '@nestjs/swagger';
 import { QueryDto } from 'src/common/dto/query.dto';
 import { ParseMongoIdPipe } from 'src/common/pipes/parse-mongo-id/parse-mongo-id.pipe';
 import { CreateItemDto } from './dto/create-item.dto';
@@ -36,11 +36,28 @@ export class ItemsController {
     return this.itemsService.findAll(query);
   }
 
+  @ApiParam({
+    name: 'id',
+    type: String,
+    description: 'Search an item by Object ID',
+    required: false,
+  })
   @Get(':id')
   findOne(@Param('id', ParseMongoIdPipe) id: string) {
     return this.itemsService.findOne(id);
   }
 
+  @ApiParam({
+    name: 'id',
+    type: String,
+    description: 'Update an item by Object ID',
+    required: true,
+  })
+  @ApiBody({
+    type: UpdateItemDto,
+    description: "Item's data to update",
+    required: true,
+  })
   @Patch(':id')
   update(
     @Param('id', ParseMongoIdPipe) id: string,
@@ -49,6 +66,12 @@ export class ItemsController {
     return this.itemsService.update(id, updateItemDto);
   }
 
+  @ApiParam({
+    name: 'id',
+    type: String,
+    description: 'Delete an item by Object ID',
+    required: true,
+  })
   @Delete(':id')
   remove(@Param('id', ParseMongoIdPipe) id: string) {
     return this.itemsService.remove(id);
