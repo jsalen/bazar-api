@@ -8,7 +8,7 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { QueryDto } from 'src/common/dto/query.dto';
 import { ParseMongoIdPipe } from 'src/common/pipes/parse-mongo-id/parse-mongo-id.pipe';
 import { CreateItemDto } from './dto/create-item.dto';
 import { UpdateItemDto } from './dto/update-item.dto';
@@ -24,8 +24,8 @@ export class ItemsController {
   }
 
   @Get()
-  findAll(@Query() paginationDto: PaginationDto) {
-    return this.itemsService.findAll(paginationDto);
+  findAll(@Query() query: QueryDto) {
+    return this.itemsService.findAll(query);
   }
 
   @Get(':id')

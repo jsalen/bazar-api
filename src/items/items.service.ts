@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
-import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { QueryDto } from 'src/common/dto/query.dto';
 import { CreateItemDto } from './dto/create-item.dto';
 import { UpdateItemDto } from './dto/update-item.dto';
 import { Item } from './entities/item.entity';
@@ -33,10 +33,20 @@ export class ItemsService {
     }
   }
 
-  async findAll(paginationDto: PaginationDto) {
-    const { limit = 10, offset = 0 } = paginationDto;
+  async findAll(query: QueryDto) {
+    const { limit = 10, offset = 0, q: searchTerm } = query;
 
-    const items = await this.ItemModel.find().limit(limit).skip(offset);
+    const items = await this.ItemModel.find(
+      searchTerm && {
+        // Search for items that INCLUDES the search term either in title or description
+        $or: [
+          { title: { $regex: new RegExp(searchTerm, 'i') } },
+          { description: { $regex: new RegExp(searchTerm, 'i') } },
+        ],
+      },
+    )
+      .limit(limit)
+      .skip(offset);
 
     return items;
   }
